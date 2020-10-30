@@ -33,7 +33,7 @@ local function flushHdr()
   local status = ngx.status
 
   -- 前端优先使用该字段作为状态码
-  if status ~= 200 then
+  if status ~= 200 and status ~= 304 then
     ngx.header['--s'] = status
   end
 
@@ -108,9 +108,9 @@ local function nodeSwitched()
 end
 
 -- 节点切换功能，目前还在测试中（demo 中已开启）
--- if nodeSwitched() then
---  return
--- end
+if nodeSwitched() then
+  return
+end
 
 
 local h, err = ngx.resp.get_headers()

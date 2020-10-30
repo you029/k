@@ -2,8 +2,8 @@
 
 { # this ensures the entire script is downloaded #
 
-JSPROXY_VER=0.1.0
-OPENRESTY_VER=1.15.8.1
+JSPROXY_VER=dev
+OPENRESTY_VER=1.15.8.2
 
 SRC_URL=https://raw.githubusercontent.com/EtherDream/jsproxy/$JSPROXY_VER
 BIN_URL=https://raw.githubusercontent.com/EtherDream/jsproxy-bin/master
@@ -95,7 +95,7 @@ gen_cert() {
   fi
 
   for domain in ${domains[@]}; do
-    echo "校验域名 $domain ..."
+    log "校验域名 $domain ..."
 
     local ret=$(getent ahosts $domain | head -n1 | awk '{print $1}')
     if [[ $ret != $ip ]]; then
@@ -225,6 +225,7 @@ main() {
   fi
 
   iptables \
+    -m comment --comment "jsproxy acme redir" \
     -t nat \
     -I PREROUTING 1 \
     -p tcp --dport 80 \
@@ -240,7 +241,7 @@ main() {
   log "切换到 jsproxy 用户，执行安装脚本 ..."
   su - jsproxy -c "$cmd"
 
-  local line=$(iptables -t nat -nL --line-numbers | grep "tcp dpt:80 redir ports 8080")
+  local line=$(iptables -t nat -nL --line-numbers | grep "jsproxy acme redir")
   iptables -t nat -D PREROUTING ${line%% *}
 
   log "安装完成。后续维护参考 https://github.com/EtherDream/jsproxy"

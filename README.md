@@ -1,7 +1,9 @@
 
 # 更新
 
-* 2019-07-24 [v0.1.0](https://github.com/EtherDream/jsproxy/blob/master/changelogs/v0.1.0.md) 发布，主要修复了缓存失效的问题。网络接口和之前版本不兼容，请及时更新服务端和 cfworker。
+* 2019-08-?? [v0.1.1](changelogs/v0.1.1.md)，支持线路自动切换，服务端增加卸载脚本。
+
+* 2019-07-24 [v0.1.0](changelogs/v0.1.0.md) 发布，主要修复了缓存失效的问题。网络接口和之前版本不兼容，请及时更新服务端和 cfworker。
 
 * 2019-06-22 [cfworker 无服务器版](cf-worker) 发布，长期使用演示服务的请使用该版本。
 
@@ -11,7 +13,7 @@
 # 安装
 
 ```bash
-curl https://raw.githubusercontent.com/EtherDream/jsproxy/0.1.0/i.sh | bash
+curl https://raw.githubusercontent.com/EtherDream/jsproxy/dev/i.sh | bash
 ```
 
 * 自动安装目前只支持 Linux x64，并且需要 root 权限
@@ -28,7 +30,7 @@ curl https://raw.githubusercontent.com/EtherDream/jsproxy/0.1.0/i.sh | bash
 将域名 `example.com` 解析到服务器 IP，然后执行：
 
 ```bash
-curl https://raw.githubusercontent.com/EtherDream/jsproxy/master/i.sh | bash -s example.com
+curl https://raw.githubusercontent.com/EtherDream/jsproxy/dev/i.sh | bash -s example.com
 ```
 
 访问: `https://example.com:8443`
@@ -66,6 +68,7 @@ Fork 本项目，进入 `gh-pages` 分支（该分支内容和 `www` 目录相�
 ```sh
 # 切换到 jsproxy 用户
 su - jsproxy
+cd server
 
 # 重启服务
 ./run.sh reload
@@ -77,10 +80,21 @@ su - jsproxy
 ./run.sh
 
 # 查看代理日志
-tail server/nginx/logs/proxy.log
+tail nginx/logs/proxy.log
 ```
 
 目前暂未实现开机自启动。
+
+
+# 如何卸载
+
+使用 root 执行：
+
+```
+./uninstall.sh
+```
+
+如果有开启端口转发，请手动删除。
 
 
 # 禁止外链
